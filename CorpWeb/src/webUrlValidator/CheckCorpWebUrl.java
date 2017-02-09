@@ -7,12 +7,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
 
 import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.*;
+import java.util.logging.Level;
 
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -38,6 +43,8 @@ public class CheckCorpWebUrl {
 	
 	WebDriver driver;
 
+
+
 	public void ValidateUrl (int testFlag, int UrlColumnNo, int ExpectedTitleColumnNo, int Actual, int Result, String ChromeDriver, String URLFileName)
 	{
 
@@ -50,6 +57,10 @@ public class CheckCorpWebUrl {
 			System.setProperty("webdriver.chrome.driver",ChromeDriver);
 			
 			driver = new ChromeDriver();
+			
+			LoggingPreferences loggingprefs = new LoggingPreferences();
+			
+			loggingprefs.enable(LogType.BROWSER, Level.ALL);
 			
 			FileInputStream file = new FileInputStream(new File(URLFileName));
 				
@@ -98,21 +109,34 @@ public class CheckCorpWebUrl {
 				
 				if ( row_num > 0 && Test_Flag.equalsIgnoreCase("Y"))
 				{
-					
+					Cell BrowserError = row.createCell(7);
 					for (Cell cell : row) 
 					{
 						cell_no = cell.getColumnIndex();
 						
 						DataFormatter objDefaultFormat = new DataFormatter();
-							
+						
 						if ( cell_no == UrlColumnNo )//Perform Url
 						{
 							appUrl = cell.getStringCellValue();
 							
 							System.out.println("Checking URL\t: " + appUrl);
 							driver.get(appUrl);
-							
 							title_actual = driver.getTitle();
+							LogEntries logEntries = driver.manage().logs().get(LogType.BROWSER);
+
+							StringBuilder SB_BrowserLogMessage = new StringBuilder();
+							
+							for (LogEntry entry : logEntries) 
+							{
+								String BrowserLogMessage=entry.toString();
+//					            System.out.println(new Date(entry.getTimestamp()) + " " + entry.getLevel() + " " + entry.getMessage());
+								SB_BrowserLogMessage.append(BrowserLogMessage + "\n");
+							}
+							System.out.println(SB_BrowserLogMessage.toString());
+							
+							BrowserError.setCellValue(SB_BrowserLogMessage.toString());
+
 						}
 
 						if ( cell_no == ExpectedTitleColumnNo )//Check Expected & Actual Title
@@ -134,7 +158,6 @@ public class CheckCorpWebUrl {
 								System.out.println("Title Matching\t: Fail");
 								test_result = "Fail";
 								fail_cnt++;
-								
 							}
 							
 						}
@@ -210,18 +233,29 @@ public class CheckCorpWebUrl {
 		
 	}
 
+	public void showBrowserLogErrors()
+	{
+		LogEntries logEntries = driver.manage().logs().get(LogType.BROWSER);
+		
+		if (logEntries.equals(null)) System.out.println("log entry is null");
+		
+		for (LogEntry entry : logEntries) 
+		{
+            System.out.println(new Date(entry.getTimestamp()) + " " + entry.getLevel() + " " + entry.getMessage());
+		}
+	}
 	public static void main(String[] args) 
 	{
 		
 		try 
 		{
-//	        String ChromeWebDriver = args[0];
-//			String filename = args[1];
+	        String ChromeWebDriver = args[0];
+			String filename = args[1];
 	        
 			CheckCorpWebUrl ccwu = new CheckCorpWebUrl();		
 //			ccwu.ValidateUrl(1,3,4,5,6,"C:\\eclipse\\chromedriver_win32_v2.23\\chromedriver.exe","C:\\Sts\\SiteCore\\STCorp_au\\STCorpWebUrl.xlsx");
-			ccwu.ValidateUrl(1,3,4,5,6,"C:\\eclipse\\chromedriver_win32\\chromedriver.exe","C:\\Sts\\SiteCore\\STCorp_au\\STCorpWebUrl.xlsx");
-//			ccwu.ValidateUrl(1,3,4,5,6,ChromeWebDriver,filename);
+//			ccwu.ValidateUrl(1,3,4,5,6,"C:\\eclipse\\chromedriver_win32\\chromedriver.exe","C:\\Sts\\SiteCore\\STCorp_au\\STCorpWebUrl.xlsx");
+			ccwu.ValidateUrl(1,3,4,5,6,ChromeWebDriver,filename);
 			ccwu.driver.quit();
 	    }
 		
