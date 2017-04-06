@@ -43,8 +43,6 @@ public class CheckCorpWebUrl {
 	
 	WebDriver driver;
 
-
-
 	public void ValidateUrl (int testFlag, int UrlColumnNo, int ExpectedTitleColumnNo, int Actual, int Result, String ChromeDriver, String URLFileName)
 	{
 
@@ -73,6 +71,8 @@ public class CheckCorpWebUrl {
 			String title_expected;//This is input from the file.
 			
 			String title_actual = null;//Will get on performing the Url.
+			
+			String url_actual = null;//Will get on performing the Url.
 			
 			int row_num;
 			
@@ -110,6 +110,8 @@ public class CheckCorpWebUrl {
 				if ( row_num > 0 && Test_Flag.equalsIgnoreCase("Y"))
 				{
 					Cell BrowserError = row.createCell(7);
+					Cell AutualUrl = row.createCell(8);
+					
 					for (Cell cell : row) 
 					{
 						cell_no = cell.getColumnIndex();
@@ -123,6 +125,8 @@ public class CheckCorpWebUrl {
 							System.out.println("Checking URL\t: " + appUrl);
 							driver.get(appUrl);
 							title_actual = driver.getTitle();
+							url_actual = driver.getCurrentUrl();
+							System.out.println("Actual URL Is " +url_actual);
 							LogEntries logEntries = driver.manage().logs().get(LogType.BROWSER);
 
 							StringBuilder SB_BrowserLogMessage = new StringBuilder();
@@ -136,6 +140,7 @@ public class CheckCorpWebUrl {
 							System.out.println(SB_BrowserLogMessage.toString());
 							
 							BrowserError.setCellValue(SB_BrowserLogMessage.toString());
+							AutualUrl.setCellValue(url_actual);
 
 						}
 
@@ -144,7 +149,7 @@ public class CheckCorpWebUrl {
 							title_expected = cell.getStringCellValue();
 							
 							System.out.println("Actual Title\t: " + title_actual);
-														
+							
 							System.out.println("Expected Title\t: " + title_expected);
 							
 							if ( title_expected.equalsIgnoreCase(title_actual) )
