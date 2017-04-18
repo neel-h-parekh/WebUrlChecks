@@ -66,13 +66,12 @@ public class CheckCorpWebUrl {
 			
 			XSSFSheet sheet = workbook.getSheetAt(0);
 						
-			String appUrl;//This is input from the file..
+			String appUrl;//Input URL from the file.
 			
-			String title_expected;//This is input from the file.
-			
-			String title_actual = null;//Will get on performing the Url.
-			
-			String url_actual = null;//Will get on performing the Url.
+			String title_expected;//Input URL expected Title from the file.
+					
+			String url_actual = null;//Variable for holding Actual URL.
+			String title_actual = null;//Variable for holding Actual URL Title.
 			
 			int row_num;
 			
