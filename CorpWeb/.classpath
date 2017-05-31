@@ -29,5 +29,10 @@
 	<classpathentry kind="lib" path="C:/eclipse/poi-bin-3.14/poi-3.14/ooxml-lib/xmlbeans-2.6.0.jar"/>
 	<classpathentry kind="lib" path="C:/eclipse/javamail1_4_5/mail.jar"/>
 	<classpathentry kind="lib" path="C:/eclipse/jaf-1.1.1/activation.jar"/>
+	<classpathentry kind="lib" path="C:/eclipse/apache-log4j-2.8.2-bin/log4j-1.2-api-2.8.2.jar"/>
+	<classpathentry kind="lib" path="C:/eclipse/apache-log4j-2.8.2-bin/log4j-api-2.8.2.jar"/>
+	<classpathentry kind="lib" path="C:/eclipse/apache-log4j-2.8.2-bin/log4j-core-2.8.2.jar"/>
+	<classpathentry kind="lib" path="C:/eclipse/htmlunit-driver-2.26-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="C:/eclipse/jsoup-1.10.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

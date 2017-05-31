@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Appenders>
+		<Console name="Console">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+		</Console>
+	</Appenders>
+	<Loggers>
+		<logger name="com" level="TRACE"/>
+		<logger name="com.webUrlValidator" level="TRACE"/>
+		<logger name="com.webUrlValidator.URLChecker" level="TRACE"/>
+		<logger name="com.webUrlValidator.URLCrawler" level="TRACE"></logger>
+	</Loggers>
+</Configuration>
